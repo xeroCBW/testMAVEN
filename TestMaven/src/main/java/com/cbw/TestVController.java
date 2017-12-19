@@ -30,5 +30,12 @@ public class TestVController {
 		
 	}
 	
+	@RequestMapping("/hello01")
+	public String test02() {
+		
+		
+		return "this is test 02";
+	}
+	
 
 }
