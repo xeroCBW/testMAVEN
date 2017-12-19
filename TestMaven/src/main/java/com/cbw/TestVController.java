@@ -54,5 +54,16 @@ public class TestVController {
 		
 		return "this is test 03";
 	}
+	
+	
+	@RequestMapping("error")
+	public String error() {
+		
+		
+		logger.error("this is error service connect");
+		
+		return "this is error";
+	}
+	
 
 }
