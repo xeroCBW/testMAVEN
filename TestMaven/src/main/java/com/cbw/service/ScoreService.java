@@ -3,6 +3,8 @@
  */
 package com.cbw.service;
 
+import java.util.List;
+
 import com.cbw.model.pojo.TTScore;
 
 /**   
@@ -27,6 +29,8 @@ public interface ScoreService {
 	    int updateByPrimaryKeySelective(TTScore record);
 
 	    int updateByPrimaryKey(TTScore record);
+	    
+	    int insertBatch(List<TTScore> list);
 	
 	
 	

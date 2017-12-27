@@ -3,6 +3,8 @@
  */
 package com.cbw.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +88,15 @@ public class ScoreServiceImpl implements ScoreService {
 	public int updateByPrimaryKey(TTScore record) {
 		// TODO Auto-generated method stub
 		return ttScoreMapper.updateByPrimaryKey(record);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cbw.service.ScoreService#insertBatch(java.util.List)
+	 */
+	@Override
+	public int insertBatch(List<TTScore> list) {
+		// TODO Auto-generated method stub
+		return ttScoreMapper.insertBatch(list);
 	}
 
 }

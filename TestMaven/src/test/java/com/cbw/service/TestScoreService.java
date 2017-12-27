@@ -3,8 +3,10 @@
  */
 package com.cbw.service;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.hibernate.validator.constraints.ScriptAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,16 +50,44 @@ public class TestScoreService {
 	}
 
 	/**
-	 * 测试批量插入数据
+	 * 测试批量插入数据 耗时51s
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testInsertBatch() throws Exception {
-		
-		
-		
 
+		for (int i = 0; i < 10000; i++) {
+
+			TTScore score = new TTScore();
+			score.setCid(10000 + i);
+			score.setName("name" + "-" + i);
+			System.out.println("开始插入....");
+			scoreService.insert(score);
+			System.out.println("开始插入结束....");
+		}
+	}
+
+	/**
+	 * 测试批量插入2
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testInsertBatch2() throws Exception {
+
+		ArrayList<TTScore> list = new ArrayList<TTScore>();
+
+		for (int i = 0; i < 10000; i++) {
+			TTScore score = new TTScore();
+			score.setCid(20000 + i);
+			score.setName("name" + "-" + i);
+			list.add(score);
+		}
+
+		System.out.println("开始插入数据...");
+		scoreService.insertBatch(list);
+		System.out.println("插入数据结束...");
 	}
 
 }

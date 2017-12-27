@@ -26,6 +26,29 @@
     values (#{cid,jdbcType=INTEGER}, #{kecheng,jdbcType=VARCHAR}, #{fenshu,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR})
   </insert>
+  <!-- 进行批量插入 -->
+  
+  <insert id="insertBatch"  parameterType="list">
+  
+  insert into `tt_score` (
+		cid, `name`
+		)
+		VALUES
+		
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.cid,jdbcType=INTEGER},
+			#{item.name,jdbcType=VARCHAR}
+			)
+		</foreach>
+  
+  
+  
+  
+  </insert>
+  
+  
   <insert id="insertSelective" parameterType="com.cbw.model.pojo.TTScore">
     insert into tt_score
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -57,6 +80,9 @@
       </if>
     </trim>
   </insert>
+  
+  
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.cbw.model.pojo.TTScore">
     update tt_score
     <set>

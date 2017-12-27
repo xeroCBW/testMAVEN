@@ -1,5 +1,7 @@
 package com.cbw.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.cbw.model.pojo.TTScore;
@@ -17,4 +19,7 @@ public interface TTScoreMapper {
     int updateByPrimaryKeySelective(TTScore record);
 
     int updateByPrimaryKey(TTScore record);
+    
+    
+    int insertBatch(List<TTScore> list);
 }
