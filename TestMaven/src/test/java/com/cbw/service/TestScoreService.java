@@ -3,12 +3,14 @@
  */
 package com.cbw.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import org.hibernate.validator.constraints.ScriptAssert;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,6 +33,9 @@ public class TestScoreService {
 
 	@Autowired
 	private ScoreService scoreService;
+	
+	@Autowired  
+	private SqlSessionTemplate sqlSessionTemplate;  
 
 	/**
 	 * 测试查询数据
@@ -69,7 +74,7 @@ public class TestScoreService {
 	}
 
 	/**
-	 * 测试批量插入2
+	 * 使用foreach,5s(最快)
 	 * 
 	 * @throws Exception
 	 */
@@ -89,5 +94,41 @@ public class TestScoreService {
 		scoreService.insertBatch(list);
 		System.out.println("插入数据结束...");
 	}
+	
+	/**
+	 * 使用mabatis自带的batch进行插入,耗时(10)中等
+	 * @throws SQLException 
+	 */
+	@Test
+	public void testInsertBatchByTrue() throws SQLException {  
+		   
+		//新获取一个模式为BATCH，自动提交为false的session  
+		//如果自动提交设置为true,将无法控制提交的条数，改为最后统一提交，可能导致内存溢出  
+		SqlSession session = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);  
+		//通过新的session获取mapper  
+		    session.getConnection().setAutoCommit(false);//不自动提交  
+//		    fooMapper = session.getMapper(TTScoreMapper.class);  
+		    int size = 10000;  
+		    try {  
+		        for (int i = 0; i < size; i++) {  
+		                TTScore score = new TTScore();  
+		                score.setCid(10000 + i);
+		                score.setName(String.valueOf(System.currentTimeMillis())); 
+		                
+		                scoreService.insert(score);
+		                    if (i % 1000 == 0 || i == size - 1) {  
+		                    //手动每1000个一提交，提交后无法回滚  
+		                    session.commit();  
+		                    //清理缓存，防止溢出  
+		                    session.clearCache();  
+		                  }  
+		        }  
+		    } catch (Exception e) {  
+		        //没有提交的数据可以回滚  
+		                        session.rollback();  
+		            } finally {  
+		        session.close();  
+		        }  
+		    }  
 
 }
