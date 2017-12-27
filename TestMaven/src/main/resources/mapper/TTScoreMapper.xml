@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbw.model.mapper.TTScoreMapper">
+  <resultMap id="BaseResultMap" type="com.cbw.model.pojo.TTScore">
+    <id column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="kecheng" jdbcType="VARCHAR" property="kecheng" />
+    <result column="fenshu" jdbcType="INTEGER" property="fenshu" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cid, kecheng, fenshu, `name`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tt_score
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tt_score
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbw.model.pojo.TTScore">
+    insert into tt_score (cid, kecheng, fenshu, 
+      `name`)
+    values (#{cid,jdbcType=INTEGER}, #{kecheng,jdbcType=VARCHAR}, #{fenshu,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbw.model.pojo.TTScore">
+    insert into tt_score
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="kecheng != null">
+        kecheng,
+      </if>
+      <if test="fenshu != null">
+        fenshu,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="kecheng != null">
+        #{kecheng,jdbcType=VARCHAR},
+      </if>
+      <if test="fenshu != null">
+        #{fenshu,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbw.model.pojo.TTScore">
+    update tt_score
+    <set>
+      <if test="kecheng != null">
+        kecheng = #{kecheng,jdbcType=VARCHAR},
+      </if>
+      <if test="fenshu != null">
+        fenshu = #{fenshu,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbw.model.pojo.TTScore">
+    update tt_score
+    set kecheng = #{kecheng,jdbcType=VARCHAR},
+      fenshu = #{fenshu,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+</mapper>
